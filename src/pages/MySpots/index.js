@@ -39,11 +39,11 @@ const MySpotsPage = () => {
           "Não há Spots disponíveis para reserva no momento!"}
 
         <div className="spots-list">
-          {!loadingSpots &&
-            mySpots.length &&
-            mySpots.map((spot, index) => (
-              <SpotCard key={`spot_${index}`} spot={spot} />
-            ))}
+          {!loadingSpots && mySpots.length
+            ? mySpots.map((spot, index) => (
+                <SpotCard key={`spot_${index}`} spot={spot} />
+              ))
+            : ""}
         </div>
       </div>
     </div>

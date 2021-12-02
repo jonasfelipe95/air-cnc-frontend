@@ -10,6 +10,16 @@ export const login = async (email, password) => {
   }
 };
 
-const UsersService = { login };
+export const registerUser = async (user) => {
+  try {
+    const response = await Api.post("/users", user);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const UsersService = { login, registerUser };
 
 export default UsersService;

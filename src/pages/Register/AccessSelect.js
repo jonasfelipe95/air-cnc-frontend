@@ -17,7 +17,7 @@ const RegisterAccessSelectPage = () => {
         <div className="flex-row">
           <div
             className="card"
-            onClick={() => navigate("/register/profile?access=company")}
+            onClick={() => navigate("/register/profile?type=owner")}
           >
             <Icons.BusinessIcon width={80} height={80} />
             <p className="access-select-title"> Sou Proprietário </p>
@@ -28,7 +28,7 @@ const RegisterAccessSelectPage = () => {
 
           <div
             className="card"
-            onClick={() => navigate("/register/profile?access=user")}
+            onClick={() => navigate("/register/profile?type=client")}
           >
             <Icons.PersonIcon width={80} height={80} />
             <p className="access-select-title"> Sou Usuário </p>
