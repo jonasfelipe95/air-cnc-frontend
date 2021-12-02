@@ -13,12 +13,28 @@ html,
   height: 100vh;
   width: 100vw;
   font-family: Roboto, Arial, sans-serif;
+  overflow: hidden;
 }
 
 form {
   width: 100%;
 }
 
+.page-container {
+  height: 100%;
+}
+
+.page-content {
+  padding: 32px;
+  height: calc(100% - 80px);
+  overflow: auto;
+}
+.title-page {
+  font-weight: bold;
+  font-size: 32px;
+  color: #707070;
+  padding-bottom: 32px;
+}
 .card {
   border-radius: 8px;
   padding: 32px;
@@ -31,6 +47,10 @@ form {
     text-align: center;
     padding-bottom: 32px;
   }
+}
+.error-message {
+  font-size: 14px;
+  color: #f00;
 }
 
 .logo-top-card {
@@ -79,4 +99,8 @@ form {
   font-weight: bold;
   cursor: pointer;
   font-size: 20px;
+
+  &:disabled {
+    background: #ccc;
+  }
 }

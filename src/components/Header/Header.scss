@@ -1,0 +1,19 @@
+.aircnc-header {
+  height: 80px;
+  width: 100%;
+  background-image: url(../../assets/images/background.png);
+  background-position: center;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .header-logo {
+    height: 48px;
+  }
+  .header-menu-icon {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+  }
+}

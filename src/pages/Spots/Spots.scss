@@ -1,0 +1,9 @@
+.spots-list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .spot-card {
+    margin-bottom: 32px;
+  }
+}

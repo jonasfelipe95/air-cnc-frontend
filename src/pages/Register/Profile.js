@@ -62,7 +62,7 @@ const RegisterProfilePage = () => {
             <div className="flex-row register-terms-of-use">
               <input type="checkbox" />
               <label>
-                Li e concordo com os <a>Termos de Uso</a>
+                Li e concordo com os <a href>Termos de Uso</a>
               </label>
             </div>
 

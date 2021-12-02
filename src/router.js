@@ -1,7 +1,6 @@
 import React from "react";
-import {
-  BrowserRouter, Redirect, Route, Switch
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import MyProfilePage from "./pages/MyProfile";
@@ -11,35 +10,66 @@ import RegisterAccessSelectPage from "./pages/Register/AccessSelect";
 import RegisterProfilePage from "./pages/Register/Profile";
 import SpotDetailPage from "./pages/Spot/Detail";
 import SpotRegisterPage from "./pages/Spot/Register";
+import SpotsPage from "./pages/Spots";
 
+const Router = () => {
+  const { user } = useAuth();
 
-const router = () => {
   return (
     <BrowserRouter>
-        <Switch>
-          <Route component={HomePage} path="/home" />
+      <Routes>
+        {!user && (
+          <>
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route element={<LoginPage />} path="/login" />
+            <Route element={<HomePage />} path="/home" />
+          </>
+        )}
+        <Route
+          element={<RegisterAccessSelectPage />}
+          path="/register/access-select"
+        />
+        <Route element={<RegisterProfilePage />} path="/register/profile" />
+
+        {user && (
+          <>
+            <Route
+              path="/"
+              element={
+                <Navigate
+                  to={user?.type === "owner" ? "/my-spots" : "/spots"}
+                  replace
+                />
+              }
+            />
+            {user?.type !== "owner" && (
+              <Route element={<SpotsPage />} path="/spots" />
+            )}
+            <Route element={<SpotRegisterPage />} path="/spot/new" />
+            <Route element={<SpotDetailPage />} path="/spot/:spotId" />
+            <Route element={<MyProfilePage />} path="/me" />
+            <Route element={<MyReservations />} path="/reservations" />
+            {user?.type === "owner" && (
+              <Route element={<MySpots />} path="/my-spots" />
+            )}
+          </>
+        )}
+
+        {!user && <Route path="*" element={<Navigate to="/home" replace />} />}
+        {user && (
           <Route
-            component={RegisterAccessSelectPage}
-            path="/register/access-select"
+            path="*"
+            element={
+              <Navigate
+                to={user?.type === "owner" ? "/my-spots" : "/spots"}
+                replace
+              />
+            }
           />
-          <Route component={RegisterProfilePage} path="/register/profile" />
-
-          <Route component={SpotRegisterPage} path="/spot/new" />
-          <Route component={SpotDetailPage} path="/spot/:spotId" />
-
-          <Route component={LoginPage} path="/login" />
-
-          <Route component={MyProfilePage} path="/me" />
-
-          <Route component={MyReservations} path="/reservations" />
-
-          <Route component={MySpots} path="/my-spots" />
-
-
-          <Redirect path="*" to="/home" />
-        </Switch>
+        )}
+      </Routes>
     </BrowserRouter>
   );
 };
 
-export default router;
+export default Router;

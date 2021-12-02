@@ -2,10 +2,10 @@ import React from "react";
 import logoImg from "../../assets/images/logo.png";
 import { Icons } from "../../components";
 import "./AccessSelect.scss";
-import {useHistory} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RegisterAccessSelectPage = () => {
-  const {push} = useHistory()
+  const navigate = useNavigate();
 
   return (
     <div className="register-access-select-page">
@@ -17,7 +17,7 @@ const RegisterAccessSelectPage = () => {
         <div className="flex-row">
           <div
             className="card"
-            onClick={() => push("/register/profile?access=company")}
+            onClick={() => navigate("/register/profile?access=company")}
           >
             <Icons.BusinessIcon width={80} height={80} />
             <p className="access-select-title"> Sou Proprietário </p>
@@ -28,7 +28,7 @@ const RegisterAccessSelectPage = () => {
 
           <div
             className="card"
-            onClick={() => push("/register/profile?access=user")}
+            onClick={() => navigate("/register/profile?access=user")}
           >
             <Icons.PersonIcon width={80} height={80} />
             <p className="access-select-title"> Sou Usuário </p>
