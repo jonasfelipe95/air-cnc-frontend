@@ -5,7 +5,6 @@ export const reserveSpot = async (spotId, date) => {
     const response = await Api.post("/bookings", {
       spotId,
       date,
-      approved: false,
     });
 
     return response.data;

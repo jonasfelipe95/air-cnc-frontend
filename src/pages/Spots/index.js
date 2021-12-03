@@ -30,9 +30,11 @@ const SpotsPage = () => {
 
         {loadingSpots && "Carregando Spots..."}
 
-        {!loadingSpots &&
-          !spots.length &&
-          "Não há Spots disponíveis para reserva no momento!"}
+        {!loadingSpots && !spots.length && (
+          <p className="empty-text">
+            Não há Spots disponíveis para reserva no momento!
+          </p>
+        )}
 
         <div className="spots-list">
           {!loadingSpots && spots.length
