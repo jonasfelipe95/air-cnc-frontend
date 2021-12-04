@@ -13,14 +13,18 @@ const SpotsPage = () => {
 
     const response = await getSpots();
 
-    setSpots([...response]);
+    if (response) {
+      setSpots([...response]);
+    } else {
+      alert("Erro em carregar Spots");
+    }
     setLoadingSpots(false);
   };
 
   useEffect(() => {
     fetchSpots();
   }, []);
-
+  console.log(spots);
   return (
     <div className="page-container">
       <Header />
@@ -39,7 +43,11 @@ const SpotsPage = () => {
         <div className="spots-list">
           {!loadingSpots && spots.length
             ? spots.map((spot, index) => (
-                <SpotCard key={`spot_${index}`} spot={spot} />
+                <SpotCard
+                  reservation={true}
+                  key={`spot_${index}`}
+                  spot={spot}
+                />
               ))
             : ""}
         </div>

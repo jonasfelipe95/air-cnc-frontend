@@ -67,7 +67,8 @@ form {
 .form-group {
   padding-bottom: 16px;
   label,
-  input {
+  input,
+  textarea {
     display: block;
     width: 100%;
     padding-left: 8px;
@@ -82,6 +83,20 @@ form {
   label {
     padding-bottom: 4px;
     color: #707070;
+  }
+  textarea {
+    border: 1px solid #707070;
+    border-radius: 4px;
+    padding-top: 4px;
+    background: transparent;
+    resize: none;
+    height: 60px;
+    font-family: Roboto, Arial, sans-serif;
+  }
+
+  input[type="file"] {
+    border: none;
+    height: auto;
   }
 }
 
@@ -101,6 +116,7 @@ form {
   font-size: 20px;
 
   &:disabled {
-    background: #ccc;
+    background: #ccc !important;
+    cursor: not-allowed;
   }
 }

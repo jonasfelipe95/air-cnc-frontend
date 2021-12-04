@@ -3,7 +3,7 @@ import "./SpotCard.scss";
 import { currencyMask } from "../../utils";
 import { reserveSpot } from "../../services/BookingService";
 
-const SpotCard = ({ spot }) => {
+const SpotCard = ({ reservation, spot }) => {
   console.log({ spot });
   const [reservationDate, setReservationDate] = useState("");
 
@@ -18,23 +18,35 @@ const SpotCard = ({ spot }) => {
     }
   };
 
+  console.log({ reservation });
   return (
-    <div className={`spot-card ${reservationDate ? "reservation-active" : ""}`}>
+    <div
+      className={`spot-card ${reservationDate ? "reservation-active" : ""} ${
+        !reservation ? "reservation-disabled" : ""
+      }`}
+    >
       <div className="spot-img-container">
         <img src={spot.thumbnail} alt={spot.title} />
       </div>
       <div className="spot-data-container">
         <div className="spot-header-container">
-          <p className="spot-title">{spot.title || " - "}</p>
+          <p className="spot-title">{spot.companyName || " - "}</p>
           <p className="spot-value">{currencyMask(spot.price) || " - "}</p>
         </div>
         <div className="spot-content">
           <div className="spot-techs">
-            <p className="spot-tech">{spot.techs || " - "}</p>
+            {JSON.parse(spot.techs).map((tech, index) => (
+              <p key={`tech-${index}`} className="spot-tech">
+                - {tech}
+              </p>
+            ))}
+            {!JSON.parse(spot.techs).length && (
+              <p className="spot-tech">Nenhuma tecnologia cadastrada</p>
+            )}
           </div>
           <p className="spot-description">{spot.description || " - "}</p>
           <div className="spot-address">
-            <p>CEP: {spot.title || " - "}</p>
+            <p>CEP: {spot.zipcode || " - "}</p>
             <p>
               {spot.address || " - "} - {spot.number || " - "}{" "}
             </p>
@@ -61,6 +73,10 @@ const SpotCard = ({ spot }) => {
         )}
         <button
           className="spot-reservation-button btn-primary"
+          disabled={!reservationDate}
+          title={
+            !reservationDate ? "Selecione uma data para reservar!" : "Reservar"
+          }
           onClick={() => {
             if (!reservationDate) return;
             onSubmitReservation();

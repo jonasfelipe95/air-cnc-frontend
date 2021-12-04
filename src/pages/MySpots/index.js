@@ -47,7 +47,11 @@ const MySpotsPage = () => {
         <div className="spots-list">
           {!loadingSpots && mySpots.length
             ? mySpots.map((spot, index) => (
-                <SpotCard key={`spot_${index}`} spot={spot} />
+                <SpotCard
+                  reservation={false}
+                  key={`spot_${index}`}
+                  spot={spot}
+                />
               ))
             : ""}
           <NewSpotCard

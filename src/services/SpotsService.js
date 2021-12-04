@@ -20,6 +20,20 @@ export const getMySpots = async (userId) => {
   }
 };
 
-const SpotsService = { getSpots, getMySpots };
+export const registerSpot = async (spot) => {
+  try {
+    const response = await Api.post("/spots", spot, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const SpotsService = { getSpots, getMySpots, registerSpot };
 
 export default SpotsService;

@@ -11,6 +11,7 @@
   .spot {
     &-img-container {
       min-width: 148px;
+      width: 30%;
       border-right: 1px solid #ccc;
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
@@ -23,12 +24,13 @@
       }
     }
     &-data-container {
-      width: calc(100% - 148px);
+      width: 70%;
+      max-width: calc(100% - 148px);
     }
     &-header-container {
       display: flex;
       justify-content: space-between;
-      padding: 8px;
+      padding: 8px 8px 16px;
     }
     &-title {
       font-size: 24px;
@@ -113,6 +115,7 @@
 
     .spot-img-container {
       border-color: #000;
+      border-bottom-left-radius: 0;
     }
 
     .spot-card-action-buttons {
@@ -120,6 +123,17 @@
       border-top: 1px solid #000;
       height: 42px;
       padding: 8px;
+    }
+  }
+
+  &.reservation-disabled {
+    .spot-img-container {
+      border-bottom-left-radius: 8px !important;
+    }
+
+    .spot-card-action-buttons {
+      display: none !important;
+      border-top: none !important;
     }
   }
 }
