@@ -27,12 +27,14 @@ const SpotCard = ({
   };
 
   const onSubmitApproveReserve = async (reserveId) => {
-    await approveReserve(reserveId);
+    const response = await approveReserve(reserveId);
+    if (!response) return alert("Falha em aprovar rese4rva!");
     onChangeApproved();
   };
 
   const onSubmitRejectReserve = async (reserveId) => {
-    await rejectReserve(reserveId);
+    const response = await rejectReserve(reserveId);
+    if (!response) return alert("Falha em rejeitar rese4rva!");
     onChangeApproved();
   };
 
