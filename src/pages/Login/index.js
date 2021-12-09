@@ -41,7 +41,6 @@ const LoginPage = () => {
     const response = await login(email, password);
 
     if (!response) return alert("E-mail e/ou Senha inválidos");
-    console.log({ response });
     localStorage.setItem("userId", response._id);
     localStorage.setItem("user", JSON.stringify(response));
     setUserId(response._id);

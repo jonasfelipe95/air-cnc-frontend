@@ -43,7 +43,6 @@ const RegisterProfilePage = () => {
 
   const onSubmitRegister = async () => {
     const user = { name, email, password, type };
-    console.log({ user });
 
     const response = await registerUser(user);
 
@@ -57,8 +56,6 @@ const RegisterProfilePage = () => {
     } else {
       alert("Erro ao cadastrar usuário!");
     }
-
-    console.log({ response });
   };
 
   useEffect(() => {

@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import "./SpotCard.scss";
 import { currencyMask } from "../../utils";
-import { reserveSpot } from "../../services/BookingService";
+import {
+  approveReserve,
+  rejectReserve,
+  reserveSpot,
+} from "../../services/BookingService";
 
-const SpotCard = ({ reservation, spot }) => {
-  console.log({ spot });
+const SpotCard = ({
+  myReserves,
+  reservation,
+  spot,
+  toApprove,
+  onChangeApproved = () => {},
+}) => {
   const [reservationDate, setReservationDate] = useState("");
 
   const onSubmitReservation = async () => {
     const response = await reserveSpot(spot._id, reservationDate);
-    console.log({ response });
     if (response?._id) {
       setReservationDate("");
       alert("Spot Reservado com sucesso!");
@@ -18,12 +26,21 @@ const SpotCard = ({ reservation, spot }) => {
     }
   };
 
-  console.log({ reservation });
+  const onSubmitApproveReserve = async (reserveId) => {
+    await approveReserve(reserveId);
+    onChangeApproved();
+  };
+
+  const onSubmitRejectReserve = async (reserveId) => {
+    await rejectReserve(reserveId);
+    onChangeApproved();
+  };
+
   return (
     <div
       className={`spot-card ${reservationDate ? "reservation-active" : ""} ${
-        !reservation ? "reservation-disabled" : ""
-      }`}
+        !reservation && !toApprove?.length ? "reservation-disabled" : ""
+      } ${myReserves?.length ? "highlight-reserves" : ""}`}
     >
       <div className="spot-img-container">
         <img src={spot.thumbnail} alt={spot.title} />
@@ -57,34 +74,89 @@ const SpotCard = ({ reservation, spot }) => {
           </div>
         </div>
       </div>
-      <div className="spot-card-action-buttons">
-        <input
-          type="date"
-          value={reservationDate}
-          onChange={(e) => setReservationDate(e.target.value)}
-        />
-        {reservationDate && (
+      {!!myReserves?.length &&
+        myReserves.map((reserve, index) => (
+          <div key={`reserve-${index}`} className="spot-card-action-buttons">
+            {reserve?.approved === false ? (
+              <p className="rejected-text">Reserva Rejeitada</p>
+            ) : reserve?.approved === true ? (
+              <p className="approved-text">Reserva Aprovada</p>
+            ) : (
+              ""
+            )}
+            <p className="date-text">
+              {reserve?.date.split("-").reverse().join("/")}
+            </p>
+          </div>
+        ))}
+
+      {!toApprove?.length && (
+        <div className="spot-card-action-buttons">
+          <input
+            type="date"
+            value={reservationDate}
+            onChange={(e) => setReservationDate(e.target.value)}
+          />
+
+          {reservationDate && (
+            <button
+              className="spot-cancel-button btn-primary"
+              onClick={() => setReservationDate("")}
+            >
+              Cancelar
+            </button>
+          )}
           <button
-            className="spot-cancel-button btn-primary"
-            onClick={() => setReservationDate("")}
+            className="spot-reservation-button btn-primary"
+            disabled={!reservationDate}
+            title={
+              !reservationDate
+                ? "Selecione uma data para reservar!"
+                : "Reservar"
+            }
+            onClick={() => {
+              if (!reservationDate) return;
+              onSubmitReservation();
+            }}
           >
-            Cancelar
+            Reservar
           </button>
-        )}
-        <button
-          className="spot-reservation-button btn-primary"
-          disabled={!reservationDate}
-          title={
-            !reservationDate ? "Selecione uma data para reservar!" : "Reservar"
-          }
-          onClick={() => {
-            if (!reservationDate) return;
-            onSubmitReservation();
-          }}
-        >
-          Reservar
-        </button>
-      </div>
+        </div>
+      )}
+
+      {!!toApprove?.length &&
+        toApprove.map((reserve, index) => (
+          <div key={`reserve-${index}`} className="spot-card-action-buttons">
+            {reserve?.approved === false ? (
+              <p className="rejected-text">Rejeitado</p>
+            ) : reserve?.approved === true ? (
+              <p className="approved-text">Aprovado</p>
+            ) : (
+              ""
+            )}
+            <p className="date-text">
+              {reserve?.date.split("-").reverse().join("/")}
+            </p>
+            <button
+              title="Rejeitar Reserva"
+              className="spot-cancel-button btn-primary"
+              onClick={() => {
+                onSubmitRejectReserve(reserve._id);
+              }}
+            >
+              Rejeitar
+            </button>
+            <button
+              className="spot-reservation-button btn-primary"
+              title="Aprovar Reserva"
+              onClick={() => {
+                onSubmitApproveReserve(reserve._id);
+              }}
+            >
+              Aprovar
+            </button>
+          </div>
+        ))}
     </div>
   );
 };

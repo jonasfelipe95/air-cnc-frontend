@@ -5,11 +5,13 @@ import Header from "../../components/Header";
 import NewSpotCard from "../../components/NewSpotCard";
 import SpotCard from "../../components/SpotCard";
 import { useAuth } from "../../context/AuthContext";
+import { getReserves } from "../../services/BookingService";
 import { getMySpots } from "../../services/SpotsService";
 import "./MySpots.scss";
 
 const MySpotsPage = () => {
   const [mySpots, setMySpots] = useState([]);
+  const [reserves, setReserves] = useState([]);
   const [loadingSpots, setLoadingSpots] = useState(false);
 
   const navigate = useNavigate();
@@ -19,13 +21,28 @@ const MySpotsPage = () => {
     setLoadingSpots(true);
 
     const response = await getMySpots(userId);
+    if (response) {
+      setMySpots([...response]);
+    } else {
+      alert("Erro em carregar Spots");
+    }
 
-    setMySpots([...response]);
     setLoadingSpots(false);
+  };
+
+  const fetchReserves = async (id) => {
+    const response = await getReserves(id);
+
+    if (response) {
+      setReserves(response);
+    } else {
+      alert("Erro em carregar reservas");
+    }
   };
 
   useEffect(() => {
     fetchMySpots();
+    fetchReserves(userId);
   }, []);
 
   return (
@@ -46,13 +63,19 @@ const MySpotsPage = () => {
 
         <div className="spots-list">
           {!loadingSpots && mySpots.length
-            ? mySpots.map((spot, index) => (
-                <SpotCard
-                  reservation={false}
-                  key={`spot_${index}`}
-                  spot={spot}
-                />
-              ))
+            ? mySpots.map((spot, index) => {
+                return (
+                  <SpotCard
+                    toApprove={reserves.filter(
+                      (_reserve) => _reserve.spot === spot._id
+                    )}
+                    onChangeApproved={() => fetchReserves(userId)}
+                    reservation={false}
+                    key={`spot_${index}`}
+                    spot={spot}
+                  />
+                );
+              })
             : ""}
           <NewSpotCard
             onClick={() => {

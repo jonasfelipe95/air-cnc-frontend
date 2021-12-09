@@ -7,10 +7,14 @@ import MenuItem from "@mui/material/MenuItem";
 import { ListItemIcon, ListItemText } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth } from "../../context/AuthContext";
+import BallotIcon from "@mui/icons-material/Ballot";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [anchor, setAnchor] = useState(null);
   const { setUserId, setUser } = useAuth();
+
+  const navigate = useNavigate();
 
   const open = Boolean(anchor);
 
@@ -41,6 +45,17 @@ const Header = () => {
           "aria-labelledby": "basic-button",
         }}
       >
+        <MenuItem
+          onClick={() => {
+            navigate("/reservations");
+            setAnchor(null);
+          }}
+        >
+          <ListItemIcon>
+            <BallotIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Minhas Reservas</ListItemText>
+        </MenuItem>
         <MenuItem
           onClick={() => {
             logout();
